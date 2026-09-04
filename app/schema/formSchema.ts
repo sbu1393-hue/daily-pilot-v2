@@ -45,3 +45,46 @@ export const loginSchema = z.object({
 
 })
 
+
+
+export const profileSchema = z.object({
+
+    username: z
+        .string()
+        .min(3, "نام کاربری حداقل ۳ کاراکتر باشد")
+        .max(30, "نام کاربری حداکثر ۳۰ کاراکتر باشد"),
+
+
+    firstName: z
+        .string()
+        .max(50, "نام حداکثر ۵۰ کاراکتر باشد")
+        .optional()
+        .nullable(),
+
+
+    lastName: z
+        .string()
+        .max(50, "نام خانوادگی حداکثر ۵۰ کاراکتر باشد")
+        .optional()
+        .nullable(),
+
+
+    phone: z
+        .string()
+        .regex(/^[0-9+\-\s]{7,20}$/, "شماره تماس معتبر نیست")
+        .optional()
+        .nullable()
+        .or(z.literal("")),
+
+
+    birthDate: z
+        .string()
+        .optional()
+        .nullable()
+        .or(z.literal(""))
+
+}).refine(
+    data => (data.username ?? "").trim().length >= 3,
+    { message: "نام کاربری حداقل ۳ کاراکتر باشد", path: ["username"] }
+)
+

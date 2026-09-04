@@ -22,6 +22,21 @@
         var(--bg);
 }
 
+/* ====== هدر لندینگ ====== */
+.landingPage .app-header {
+    position: relative;
+    top: 0;
+    margin: 20px auto 0;
+}
+
+.landingPage .header-user-btn {
+    background: var(--surface);
+}
+
+.landingPage .header-menu-item {
+    color: var(--text);
+}
+
 /* ====== Hero ====== */
 .hero {
     padding: 110px 20px 70px;
@@ -383,6 +398,52 @@
     .ctaCard {
         padding: 48px 20px;
     }
+}
+
+/* ====== تم تیره (لندینگ) ====== */
+:global([data-theme="dark"]) .landingPage {
+    --bg: #0b1120;
+    --surface: #11192d;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --primary: #818cf8;
+    --primary-2: #a78bfa;
+    --primary-soft: rgba(99, 102, 241, .18);
+    --success: #34d399;
+    --border: #2b3a55;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 12px -4px rgba(0, 0, 0, .4);
+    --shadow-lg: 0 12px 24px -8px rgba(0, 0, 0, .5), 0 32px 64px -16px rgba(0, 0, 0, .6);
+}
+
+:global([data-theme="dark"]) .landingPage .previewBar {
+    background: #0e1526;
+    border-bottom-color: var(--border);
+}
+
+:global([data-theme="dark"]) .landingPage .previewUrl {
+    background: #0e1526;
+    border-color: var(--border);
+}
+
+:global([data-theme="dark"]) .landingPage .task {
+    background: #0e1526;
+}
+
+:global([data-theme="dark"]) .landingPage .task:hover {
+    background: var(--primary-soft);
+}
+
+:global([data-theme="dark"]) .landingPage .taskCheck {
+    border-color: #475569;
+    background: #0e1526;
+}
+
+:global([data-theme="dark"]) .landingPage .app-header {
+    background: rgba(17, 25, 45, .8);
+}
+
+:global([data-theme="dark"]) .landingPage .header-user-name {
+    color: var(--text);
 }
 
 /* ====== دسترس‌پذیری ====== */

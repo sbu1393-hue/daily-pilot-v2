@@ -38,9 +38,9 @@
 
 /* ====== کارت تسک ====== */
 .card {
-    background: rgba(255, 255, 255, .82);
+    background: var(--surface);
     backdrop-filter: blur(18px);
-    border: 1px solid rgba(var(--ink-rgb), .06);
+    border: 1px solid var(--border);
     border-radius: 20px;
     padding: 16px 18px;
     box-shadow: 0 8px 24px rgba(var(--ink-rgb), .05);
@@ -56,7 +56,7 @@
 
 .card.done {
     opacity: .7;
-    background: rgba(248, 250, 252, .8);
+    background: var(--surface);
 }
 
 .topRow {
@@ -176,7 +176,7 @@
     cursor: pointer;
     font-family: inherit;
     color: var(--ink-2);
-    background: #fff;
+    background: var(--surface-solid);
     padding: 9px 16px;
     border-radius: 999px;
     font-weight: 700;
@@ -210,7 +210,8 @@
 .modal {
     width: 100%;
     max-width: 440px;
-    background: #fff;
+    background: var(--surface-solid);
+    border: 1px solid var(--border);
     border-radius: 24px;
     padding: 24px;
     box-shadow: 0 32px 64px -16px rgba(var(--ink-rgb), .25);
@@ -274,7 +275,7 @@
 
 .input:focus {
     border-color: var(--primary);
-    background: #fff;
+    background: var(--surface-solid);
 }
 
 .modalActions {
@@ -343,9 +344,9 @@
     display: flex;
     gap: 10px;
     align-items: center;
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
-    color: #9a3412;
+    background: var(--warning-bg);
+    border: 1px solid rgba(245, 158, 11, .35);
+    color: var(--warning);
     padding: 12px 16px;
     border-radius: 16px;
     font-size: .82rem;
@@ -359,7 +360,7 @@
     gap: 12px;
     flex-wrap: wrap;
     background: var(--primary-soft);
-    border: 1.5px dashed #a5b4fc;
+    border: 1.5px dashed var(--primary);
     padding: 14px 16px;
     border-radius: 18px;
     font-size: .85rem;
@@ -370,7 +371,7 @@
     text-align: center;
     padding: 40px 16px;
     color: var(--muted-2);
-    background: rgba(255, 255, 255, .55);
+    background: var(--surface);
     border: 1.5px dashed var(--border);
     border-radius: 20px;
     font-size: .9rem;
@@ -439,7 +440,7 @@
 
 .textarea:focus {
     border-color: var(--primary);
-    background: #fff;
+    background: var(--surface-solid);
 }
 
 .aiBox {
@@ -511,8 +512,8 @@
 
 .inlineError {
     color: var(--danger);
-    background: #fef3f2;
-    border: 1px solid #fecdca;
+    background: var(--danger-bg);
+    border: 1px solid rgba(248, 113, 113, .35);
     border-radius: 12px;
     padding: 10px 14px;
     font-size: .82rem;

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { fmtMinutes } from "@/app/lib/time"
 import { toast } from "react-toastify"
+import { useSettings } from "@/app/contexts/SettingsContext"
 import { type TaskItem } from "./taskTypes"
 import styles from "./task.module.css"
 
@@ -18,6 +19,7 @@ export default function CompleteTaskModal({ task, onClose, onCompleted }: Props)
     const [minutes, setMinutes] = useState("")
     const [loading, setLoading] = useState(false)
     const [result, setResult] = useState<Result | null>(null)
+    const { playBeep } = useSettings()
 
     useEffect(() => {
         if (task) {
@@ -61,6 +63,7 @@ export default function CompleteTaskModal({ task, onClose, onCompleted }: Props)
             const overspent = body.result?.overspentMinutes ?? 0
 
             setResult({ saved, overspent, spent: value })
+            playBeep()
         } catch (e) {
             toast.error(e instanceof Error ? e.message : "خطا در ثبت اتمام")
         } finally {

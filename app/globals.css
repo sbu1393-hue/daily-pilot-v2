@@ -59,6 +59,46 @@
   --transition: all .25s ease;
 }
 
+/* ====== تم تیره ====== */
+[data-theme="dark"] {
+  /* برند: نسخه‌ی روشن‌تر برای پس‌زمینه‌ی تیره */
+  --primary: #818cf8;
+  --primary-dark: #a5b4fc;
+  --primary-2: #a78bfa;
+  --primary-soft: rgba(99, 102, 241, .18);
+
+  /* متن و پس‌زمینه */
+  --ink: #e2e8f0;
+  --ink-rgb: 226, 232, 240;
+  --text-strong: #f1f5f9;
+  --ink-2: #cbd5e1;
+  --muted: #94a3b8;
+  --muted-2: #64748b;
+  --bg: #0b1120;
+  --surface: rgba(17, 25, 45, .78);
+  --surface-solid: #11192d;
+  --border: #2b3a55;
+  --border-soft: #1f2a42;
+  --chip-bg: #1c2740;
+  --input-bg: #0e1526;
+
+  /* وضعیت‌ها */
+  --success: #34d399;
+  --success-bg: rgba(16, 185, 129, .13);
+  --warning: #fbbf24;
+  --warning-bg: rgba(245, 158, 11, .13);
+  --danger: #f87171;
+  --danger-bg: rgba(248, 113, 113, .13);
+  --danger-strong: #fb7185;
+  --danger-bg-strong: rgba(251, 113, 133, .13);
+  --amber: #f59e0b;
+
+  /* سایه‌ها: تیره‌تر */
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, .4);
+  --shadow-md: 0 12px 32px -12px rgba(0, 0, 0, .55);
+  --shadow-lg: 0 24px 60px -16px rgba(0, 0, 0, .65);
+}
+
 /* ====== بازنشانی پایه ====== */
 *,
 *::before,
@@ -262,12 +302,12 @@ input[type="number"] {
 
   width: min(1000px, 90%);
 
-  background: rgba(255, 255, 255, .75);
+  background: var(--surface);
 
   backdrop-filter: blur(20px);
 
 
-  border: 1px solid rgba(255, 255, 255, .4);
+  border: 1px solid var(--border);
 
 
   border-radius: var(--radius-lg);
@@ -311,6 +351,87 @@ input[type="number"] {
 .dp-header-link:hover {
   color: var(--primary-dark);
   background: #e0e7ff;
+}
+
+.header-user {
+  position: relative;
+}
+
+.header-user-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: var(--radius-full);
+  padding: 4px 12px 4px 4px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: .82rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.header-user-btn:hover {
+  border-color: var(--primary);
+}
+
+.header-user-name {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  inset-inline-start: 0;
+  min-width: 220px;
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+  z-index: 100;
+  animation: dp-pop .18s ease;
+}
+
+.header-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: start;
+  border: none;
+  background: none;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.header-menu-item:hover {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.header-menu-logout:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+@media (max-width: 560px) {
+  .header-user-name {
+    display: none;
+  }
 }
 
 /* ============================================================
@@ -431,6 +552,13 @@ input[type="number"] {
 
 }
 
+[data-theme="dark"] .app-bg {
+  background:
+    radial-gradient(circle at top left, rgba(99, 102, 241, .14), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(139, 92, 246, .12), transparent 32%),
+    var(--bg);
+}
+
 
 .app-container {
 
@@ -444,8 +572,7 @@ input[type="number"] {
 
 /* ============================================================
    تقویم جلالی
-   ============================================================ */
-.calendar-day {
+   ============================================================ */.calendar-day {
 
 
   width: 82px;
@@ -458,8 +585,7 @@ input[type="number"] {
   border-radius: var(--radius-lg);
 
 
-  background: rgba(255, 255, 255, .75);
-
+  background: var(--surface);
 
   backdrop-filter: blur(15px);
 
@@ -559,23 +685,18 @@ input[type="number"] {
 
     2px solid var(--primary);
 
-}
-
-.calendar-widget {
+}.calendar-widget {
 
 
-  background: rgba(255, 255, 255, .65);
+  background: var(--surface);
 
-
-  border: 1px solid rgba(255, 255, 255, .5);
-
+  border: 1px solid var(--border);
 
   backdrop-filter: blur(20px);
 
 
 
   border-radius: 32px;
-
 
   padding: 24px;
 

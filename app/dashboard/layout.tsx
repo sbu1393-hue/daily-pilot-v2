@@ -11,5 +11,5 @@ export default async function DashboardLayout({
     const user = await getCurrentUser()
     if (!user) redirect("/auth/login")
 
-    return <AppShell>{children}</AppShell>
+    return <AppShell user={user}>{children}</AppShell>
 }
