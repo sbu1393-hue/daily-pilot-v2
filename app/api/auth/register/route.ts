@@ -2,6 +2,7 @@ import {NextRequest,NextResponse} from "next/server"
 import {getPrisma} from "@/app/lib/getPrisma"
 import bcrypt from "bcrypt"
 import { registerSchema } from "@/app/schema/formSchema"
+import { isRateLimited, clientIp } from "@/app/lib/rateLimit"
     
     
     
@@ -11,6 +12,14 @@ import { registerSchema } from "@/app/schema/formSchema"
     
     
     try{
+
+    // محدودیت نرخ: حداکثر چند ثبت‌نام از یک IP در یک بازه
+    if (isRateLimited(`register:ip:${clientIp(req)}`, 5, 60 * 60 * 1000)) {
+        return NextResponse.json(
+            { message: "تعداد ثبت‌نام‌ها زیاد شده؛ کمی بعد دوباره تلاش کن" },
+            { status: 429 }
+        )
+    }
 
     const body =
     await req.json()

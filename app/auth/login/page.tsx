@@ -7,6 +7,7 @@ import { loginSchema } from "@/app/schema/formSchema"
 import { z } from "zod"
 import { useState } from "react"
 import FormInput from "@/app/components/FormInput"
+import AuthCard from "@/app/components/AuthCard"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 import Link from "next/link"
@@ -99,69 +100,53 @@ export default function LoginForm() {
 
 
     return (
-
-        <form
-
-            onSubmit={
-                handleSubmit(onSubmit)
-            }
-
-            className="
-            card
-            p-4
-            shadow
-            rounded-4
-            "
-
+        <AuthCard
+            title="ورود به Daily Pilot"
+            subtitle="روزت را با خلبان خودکار برنامهریزی کن"
         >
-
-
-            <h3 className="mb-4">
-                ورود
-            </h3>
-
-
-
-            {
-                loginFields.map((item) => (
-
-                    <FormInput
-                        key={item.name}
-                        formItem={item}
-                        register={register}
-                        errors={errors}
-                    />
-                ))
-            }
-
-
-
-            <button
-                type="submit"
-                disabled={loading}
-
-                className="
-                btn
-                btn-primary
-                "
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="dp-form"
             >
+
+
                 {
-                    loading
-                        ?
-                        "در حال ورود..."
-                        :
-                        "ورود"
+                    loginFields.map((item) => (
+
+                        <FormInput
+                            key={item.name}
+                            formItem={item}
+                            register={register}
+                            errors={errors}
+                        />
+                    ))
                 }
-            </button>
-            <Link href="/auth/register" className="text-decoration-none my-2">
-                <small>
-                    ثبت نام کرده اید؟
-                </small>
-            </Link>
 
 
-        </form>
 
+                <button
+                    type="submit"
+                    disabled={loading}
+
+                    className="dp-btn dp-btn-primary dp-btn-block"
+                >
+                    {
+                        loading
+                            ?
+                            "در حال ورود..."
+                            :
+                            "ورود"
+                    }
+                </button>
+            </form>
+
+            <div className="dp-auth-switch">
+                حساب کاربری نداری؟{" "}
+                <Link href="/auth/register">
+                    ثبتنام کن
+                </Link>
+            </div>
+        </AuthCard>
     )
 
 }

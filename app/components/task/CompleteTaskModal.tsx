@@ -55,10 +55,10 @@ export default function CompleteTaskModal({ task, onClose, onCompleted }: Props)
             const json = await res.json().catch(() => ({}))
             if (!res.ok) throw new Error((json as { message?: string }).message || "خطا در ثبت اتمام")
 
-            // پارس دفاعی: پاسخ ممکن است flat یا داخل data باشد
-            const body = json as { savedMinutes?: number; overspentMinutes?: number; data?: { savedMinutes?: number; overspentMinutes?: number } }
-            const saved = body.savedMinutes ?? body.data?.savedMinutes ?? 0
-            const overspent = body.overspentMinutes ?? body.data?.overspentMinutes ?? 0
+            // سرور پاسخ را به شکل { result: { savedMinutes, overspentMinutes } } برمی‌گرداند
+            const body = json as { result?: { savedMinutes?: number; overspentMinutes?: number } }
+            const saved = body.result?.savedMinutes ?? 0
+            const overspent = body.result?.overspentMinutes ?? 0
 
             setResult({ saved, overspent, spent: value })
         } catch (e) {

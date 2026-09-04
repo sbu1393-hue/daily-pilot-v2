@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { Vazirmatn } from "next/font/google"
 import "./globals.css"
-import "bootstrap/dist/css/bootstrap.min.css"
 import "react-toastify/dist/ReactToastify.css"
 import { CalendarProvider } from "./contexts/CalenderContext"
 import { ToastContainer } from "react-toastify"

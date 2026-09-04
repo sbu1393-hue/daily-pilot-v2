@@ -26,20 +26,22 @@ type FormInputProps<T extends FieldValues> = {
 
 export default function FormInput<T extends FieldValues>({ formItem, register, errors }: FormInputProps<T>) {
 
+    const hasError = Boolean(errors[formItem.name])
+
     return (
-        <div className="mb-3">
-            <label className="form-label">
+        <div className="dp-field">
+            <label className="dp-field-label">
                 {formItem.label}
             </label>
             <input
                 type={formItem.type}
                 placeholder={formItem.placeholder}
-                className="form-control"
+                className={`dp-input ${hasError ? "dp-input-error" : ""}`}
                 {...register(formItem.name)}
             />
             {
-                errors[formItem.name] &&
-                <p className="text-danger small mt-2">
+                hasError &&
+                <p className="dp-error-text">
                     {
                         String(
                             errors[formItem.name]?.message

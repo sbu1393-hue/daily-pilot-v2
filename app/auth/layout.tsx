@@ -1,23 +1,14 @@
-export default function AuthLayout({
-    children
-    }:{
-    children:React.ReactNode
-    }){
-    
-    return (
-    
-    <div className="
-    min-vh-100
-    d-flex
-    align-items-center
-    justify-content-center
-    bg-light
-    ">
-    
-    {children}
-    
-    </div>
-    
-    )
-    
-    }
+import { getCurrentUser } from "@/app/lib/getCurrentUser"
+import { redirect } from "next/navigation"
+
+export default async function AuthLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    // کاربری که از قبل وارد شده نباید دوباره وارد صفحه ورود/ثبت‌نام شود
+    const user = await getCurrentUser()
+    if (user) redirect("/dashboard")
+
+    return <div className="dp-shell">{children}</div>
+}

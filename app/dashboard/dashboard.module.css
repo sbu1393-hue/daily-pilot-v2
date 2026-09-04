@@ -7,10 +7,10 @@
   
   .statCard {
     background: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(var(--ink-rgb), 0.06);
     border-radius: 20px;
     padding: 14px 16px;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 8px 24px rgba(var(--ink-rgb), 0.05);
     backdrop-filter: blur(16px);
     display: flex;
     flex-direction: column;
@@ -21,7 +21,7 @@
     display: flex;
     align-items: center;
     gap: 7px;
-    color: #64748b;
+    color: var(--muted);
     font-size: 0.78rem;
     font-weight: 700;
   }
@@ -29,38 +29,38 @@
   .statValue {
     font-size: 1.2rem;
     font-weight: 800;
-    color: #0f172a;
+    color: var(--ink);
   }
   
   .statCard.pool .statValue {
-    color: #4f46e5;
+    color: var(--primary-dark);
   }
   .statCard.saved .statValue {
-    color: #d97706;
+    color: var(--amber);
   }
   
   .progressTrack {
     height: 6px;
     border-radius: 999px;
-    background: #eef2ff;
+    background: var(--primary-soft);
     overflow: hidden;
     margin-top: 2px;
   }
   .progressFill {
     height: 100%;
     border-radius: 999px;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    background: var(--gradient-h);
     transition: width 0.4s ease;
   }
   .progressTrack.over .progressFill {
-    background: #f43f5e;
+    background: var(--danger-strong);
   }
   
   .warnChip {
     font-size: 0.68rem;
     font-weight: 700;
-    color: #e11d48;
-    background: #ffe4e6;
+    color: var(--danger-strong);
+    background: var(--danger-bg-strong);
     border-radius: 999px;
     padding: 3px 10px;
     width: max-content;
@@ -75,9 +75,9 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid var(--border);
     background: rgba(255, 255, 255, 0.8);
-    color: #475569;
+    color: var(--ink-2);
     border-radius: 999px;
     padding: 7px 14px;
     font-size: 0.78rem;
@@ -86,8 +86,8 @@
     transition: all 0.2s ease;
   }
   .editBtn:hover {
-    border-color: #6366f1;
-    color: #4f46e5;
+    border-color: var(--primary);
+    color: var(--primary-dark);
   }
   
   /* ===== مودال شروع روز ===== */
@@ -95,7 +95,7 @@
     position: fixed;
     inset: 0;
     z-index: 1050;
-    background: rgba(15, 23, 42, 0.45);
+    background: rgba(var(--ink-rgb), 0.45);
     backdrop-filter: blur(6px);
     display: grid;
     place-items: center;
@@ -107,7 +107,7 @@
     background: #fff;
     border-radius: 28px;
     padding: 26px;
-    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 30px 80px rgba(var(--ink-rgb), 0.25);
     animation: pop 0.25s ease;
   }
   @keyframes pop {
@@ -141,10 +141,10 @@
     display: grid;
     place-items: center;
     cursor: pointer;
-    color: #475569;
+    color: var(--ink-2);
   }
   .modalSub {
-    color: #64748b;
+    color: var(--muted);
     font-size: 0.85rem;
     line-height: 1.9;
     margin: 0 0 18px;
@@ -157,9 +157,9 @@
     margin-bottom: 14px;
   }
   .preset {
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid var(--border);
     background: #fff;
-    color: #334155;
+    color: var(--ink-2);
     border-radius: 999px;
     padding: 8px 16px;
     font-size: 0.85rem;
@@ -172,14 +172,14 @@
     border-color: #a5b4fc;
   }
   .presetActive {
-    border-color: #6366f1;
-    background: #eef2ff;
-    color: #4f46e5;
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    color: var(--primary-dark);
   }
   
   .minuteInput {
     width: 100%;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid var(--border);
     border-radius: 16px;
     padding: 13px 16px;
     font-size: 1rem;
@@ -191,7 +191,7 @@
   }
   .minuteInput:focus {
     outline: none;
-    border-color: #6366f1;
+    border-color: var(--primary);
   }
   
   .btnPrimary {
@@ -203,7 +203,7 @@
     font-weight: 800;
     font-family: inherit;
     color: #fff;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
     box-shadow: 0 12px 26px -10px rgba(79, 70, 229, 0.6);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -217,7 +217,7 @@
   }
   
   .formError {
-    color: #e11d48;
+    color: var(--danger-strong);
     font-size: 0.8rem;
     margin: -6px 0 12px;
     font-weight: 600;
