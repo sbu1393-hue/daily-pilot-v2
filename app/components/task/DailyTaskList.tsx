@@ -58,19 +58,14 @@ export default function DailyTaskList() {
         }
     }, [selectedDate])
 
-    // تسک‌های ناتمام روزهای قبل — فرض: GET /api/tasks بدون dayKey همه تسک‌ها را برمی‌گرداند
+    // تسک‌های ناتمام روزهای قبل — اندپوینت مخصوص بازگرداندنِ تسک‌های عقب‌افتاده
     const loadOverdue = useCallback(async () => {
         try {
-            const res = await fetch("/api/tasks")
+            const res = await fetch("/api/tasks/overdue")
             const json = await res.json().catch(() => ({}))
             if (!res.ok) return
-            const today = todayKey()
-            const limit = shiftDayKey(today, -6) // فقط ۷ روز اخیر
-            setOverdue(
-                readTasks(json).filter(
-                    (t) => t.status !== "DONE" && t.dayKey < today && t.dayKey >= limit,
-                ),
-            )
+            const limit = shiftDayKey(todayKey(), -6) // فقط ۷ روز اخیر
+            setOverdue(readTasks(json).filter((t) => t.dayKey >= limit))
         } catch {
             /* بی‌صدا */
         }

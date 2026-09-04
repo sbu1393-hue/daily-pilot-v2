@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { fmtMinutes } from "@/app/lib/time"
 import { toast } from "react-toastify"
+import { useSettings } from "@/app/contexts/SettingsContext"
 import { type TaskItem } from "./taskTypes"
 import styles from "./task.module.css"
 
@@ -18,6 +19,7 @@ export default function CompleteTaskModal({ task, onClose, onCompleted }: Props)
     const [minutes, setMinutes] = useState("")
     const [loading, setLoading] = useState(false)
     const [result, setResult] = useState<Result | null>(null)
+    const { playBeep } = useSettings()
 
     useEffect(() => {
         if (task) {
@@ -55,12 +57,13 @@ export default function CompleteTaskModal({ task, onClose, onCompleted }: Props)
             const json = await res.json().catch(() => ({}))
             if (!res.ok) throw new Error((json as { message?: string }).message || "خطا در ثبت اتمام")
 
-            // پارس دفاعی: پاسخ ممکن است flat یا داخل data باشد
-            const body = json as { savedMinutes?: number; overspentMinutes?: number; data?: { savedMinutes?: number; overspentMinutes?: number } }
-            const saved = body.savedMinutes ?? body.data?.savedMinutes ?? 0
-            const overspent = body.overspentMinutes ?? body.data?.overspentMinutes ?? 0
+            // سرور پاسخ را به شکل { result: { savedMinutes, overspentMinutes } } برمی‌گرداند
+            const body = json as { result?: { savedMinutes?: number; overspentMinutes?: number } }
+            const saved = body.result?.savedMinutes ?? 0
+            const overspent = body.result?.overspentMinutes ?? 0
 
             setResult({ saved, overspent, spent: value })
+            playBeep()
         } catch (e) {
             toast.error(e instanceof Error ? e.message : "خطا در ثبت اتمام")
         } finally {

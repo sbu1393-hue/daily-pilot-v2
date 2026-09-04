@@ -25,7 +25,12 @@ export async function POST(req: NextRequest) {
             where: { id: { in: taskIds }, userId: user.id, status: { not: "DONE" } },
         })
 
-        if (tasks.length === 0) {
+        // فقط تسک‌هایی که روز برنامه‌ریزی دارند قابل انتقال‌اند
+        const schedulable = tasks.filter(
+            (t): t is (typeof tasks)[number] & { dayKey: string } => t.dayKey != null,
+        )
+
+        if (schedulable.length === 0) {
             return NextResponse.json({ message: "تسکی برای انتقال پیدا نشد" }, { status: 404 })
         }
 
@@ -34,9 +39,9 @@ export async function POST(req: NextRequest) {
         const moved: { id: number; from: string; to: string }[] = []
 
         await prisma.$transaction(
-            tasks.map((task) => {
+            schedulable.map((task) => {
                 const from = task.dayKey
-                // عقبافتاده → امروز؛ تسک امروز/آینده → فردا
+                // عقب‌افتاده → امروز؛ تسک امروز/آینده → فردا
                 const to = from < today ? today : shiftDayKey(from, 1)
                 affectedDays.add(from)
                 affectedDays.add(to)

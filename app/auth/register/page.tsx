@@ -6,6 +6,7 @@ import { useState } from "react"
 import { registerSchema } from "@/app/schema/formSchema"
 import { z } from "zod"
 import FormInput from "@/app/components/FormInput"
+import AuthCard from "@/app/components/AuthCard"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 import Link from "next/link"
@@ -112,76 +113,61 @@ export default function RegisterForm() {
 
 
     return (
-
-        <form
-
-            onSubmit={
-                handleSubmit(onSubmit)
-            }
-
-            className="
-            card
-            p-4
-            shadow
-            rounded-4
-            "
-
+        <AuthCard
+            title="ساخت حساب کاربری"
+            subtitle="چند ثانیه تا شروع برنامهریزی هوشمند روزانه"
         >
-
-
-            <h3 className="mb-4">
-                ثبت نام
-            </h3>
-
-
-
-            {
-                registerFields.map((item) => (
-
-                    <FormInput
-
-                        key={item.name}
-
-                        formItem={item}
-
-                        register={register}
-
-                        errors={errors}
-
-                    />
-
-                ))
-            }
-
-
-
-
-            <button
-
-                disabled={loading}
-
-                className="
-                btn
-                btn-primary
-                "
-
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="dp-form"
             >
+
+
                 {
-                    loading
-                        ?
-                        "در حال ثبت..."
-                        :
-                        "ثبت نام"
+                    registerFields.map((item) => (
+
+                        <FormInput
+
+                            key={item.name}
+
+                            formItem={item}
+
+                            register={register}
+
+                            errors={errors}
+
+                        />
+
+                    ))
                 }
-            </button>
-            <Link href="/auth/login" className="text-decoration-none my-2">
-                <small>
-                    قبلا ثبت نام کرده ام!
-                </small>
-            </Link>
 
-        </form>
 
+
+
+                <button
+
+                    disabled={loading}
+
+                    className="dp-btn dp-btn-primary dp-btn-block"
+
+                >
+                    {
+                        loading
+                            ?
+                            "در حال ثبت..."
+                            :
+                            "ثبت نام"
+                    }
+                </button>
+            </form>
+
+            <div className="dp-auth-switch">
+                قبلاً ثبتنام کردهای؟{" "}
+                <Link href="/auth/login">
+                    وارد شو
+                </Link>
+            </div>
+        </AuthCard>
     )
 
 }
