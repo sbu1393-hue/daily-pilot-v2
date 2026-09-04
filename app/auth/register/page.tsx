@@ -1,0 +1,187 @@
+"use client"
+
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
+import { registerSchema } from "@/app/schema/formSchema"
+import { z } from "zod"
+import FormInput from "@/app/components/FormInput"
+import { useRouter } from "next/navigation"
+import { toast } from "react-toastify"
+import Link from "next/link"
+
+export type RegisterInput = z.infer<typeof registerSchema>
+
+export const registerFields = [
+    {
+        name: "username",
+        type: "text",
+        label: "نام کاربری",
+        placeholder: "نام کاربری خود را وارد کنید"
+    },
+    {
+        name: "email",
+        type: "email",
+        label: "ایمیل",
+        placeholder: "example@email.com"
+    },
+    {
+        name: "password",
+        type: "password",
+        label: "رمز عبور",
+        placeholder: "رمز عبور را وارد کنید"
+    },
+    {
+        name: "confirmPassword",
+        type: "password",
+        label: "تکرار رمز عبور",
+        placeholder: "رمز عبور را دوباره وارد کنید"
+    }
+] satisfies {
+    name: keyof RegisterInput
+    type: string
+    label: string
+    placeholder: string
+}[]
+
+
+
+export default function RegisterForm() {
+
+
+    const {
+        register,
+        handleSubmit,
+        formState: {
+            errors
+        }
+
+    } = useForm<RegisterInput>({
+
+        resolver: zodResolver(registerSchema)
+
+    })
+
+
+    const [loading, setLoading] = useState(false)
+
+    const router = useRouter()
+
+    const onSubmit = async (data: RegisterInput) => {
+
+
+        try {
+
+            setLoading(true)
+
+
+            const res = await fetch(
+                "/api/auth/register",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(data)
+                }
+            )
+
+            const result = await res.json()
+
+            if (!res.ok) {
+                toast.error(result.message)
+                return
+            }
+
+            toast.success("ثبت نام با موفقیت انجام شد")
+            router.push("/auth/login")
+
+        }
+        catch (error) {
+            console.log(error)
+            toast.error("ثبت نام با شکست مواجه شد")
+        }
+        finally {
+            setLoading(false)
+        }
+
+    }
+
+
+
+    return (
+
+        <form
+
+            onSubmit={
+                handleSubmit(onSubmit)
+            }
+
+            className="
+            card
+            p-4
+            shadow
+            rounded-4
+            "
+
+        >
+
+
+            <h3 className="mb-4">
+                ثبت نام
+            </h3>
+
+
+
+            {
+                registerFields.map((item) => (
+
+                    <FormInput
+
+                        key={item.name}
+
+                        formItem={item}
+
+                        register={register}
+
+                        errors={errors}
+
+                    />
+
+                ))
+            }
+
+
+
+
+            <button
+
+                disabled={loading}
+
+                className="
+                btn
+                btn-primary
+                "
+
+            >
+                {
+                    loading
+                        ?
+                        "در حال ثبت..."
+                        :
+                        "ثبت نام"
+                }
+            </button>
+            <Link href="/auth/login" className="text-decoration-none my-2">
+                <small>
+                    قبلا ثبت نام کرده ام!
+                </small>
+            </Link>
+
+        </form>
+
+    )
+
+}
