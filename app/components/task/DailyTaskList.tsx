@@ -3,9 +3,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useCalendar } from "@/app/contexts/CalenderContext"
-import { useDaySummary } from "../../hooks/UseDaySummary"
+import { useDaySummary, type DaySummary } from "../../hooks/UseDaySummary"
 import { todayKey, shiftDayKey } from "../../lib/jalili"
 import { faDigits } from "@/app/lib/time"
+import {
+    cacheDay,
+    enqueueTask,
+    isOffline,
+    onOnline,
+    readCachedDay,
+    readQueue,
+    syncQueue,
+    type QueuedTask,
+} from "@/app/lib/offline"
 import { toast } from "react-toastify"
 import { type TaskItem } from "./taskTypes"
 import TaskCard from "./TaskCard"
@@ -39,8 +49,22 @@ export default function DailyTaskList() {
     const [deleteTask, setDeleteTask] = useState<TaskItem | null>(null)
 
     const [reanalyzeTask, setReanalyzeTask] = useState<TaskItem | null>(null)
+    const [queuedTasks, setQueuedTasks] = useState<QueuedTask[]>([])
+    const [offline, setOffline] = useState(false)
 
     const requestSeq = useRef(0) // محافظ race هنگام تعویض سریع روز
+
+    /* نمایش تسک‌های صف‌شده‌ی آفلاین فقط برای همان روز */
+    const visibleQueued = useMemo(
+        () => queuedTasks.filter((q) => q.dayKey === selectedDate),
+        [queuedTasks, selectedDate],
+    )
+
+    const refreshQueue = useCallback(() => {
+        setQueuedTasks(
+            readQueue().sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+        )
+    }, [])
 
     const loadDay = useCallback(async () => {
         const seq = ++requestSeq.current
@@ -49,10 +73,32 @@ export default function DailyTaskList() {
             const res = await fetch(`/api/tasks?dayKey=${selectedDate}`)
             const json = await res.json().catch(() => ({}))
             if (!res.ok) throw new Error((json as { message?: string }).message || "خطا در دریافت تسک‌ها")
-            if (seq === requestSeq.current) setTasks(readTasks(json))
+            const dayTasks = readTasks(json)
+            if (seq === requestSeq.current) {
+                setTasks(dayTasks)
+                setOffline(false)
+            }
+            /* کش محلی برای استفاده‌ی آفلاین بعدی */
+            try {
+                const sumRes = await fetch(`/api/planner/day?dayKey=${selectedDate}`)
+                const sumJson = await sumRes.json().catch(() => ({}))
+                cacheDay(selectedDate, dayTasks, (sumJson as { summary?: DaySummary | null }).summary ?? null)
+            } catch {
+                cacheDay(selectedDate, dayTasks, null)
+            }
         } catch (e) {
             if (seq === requestSeq.current) {
-                toast.error(e instanceof Error ? e.message : "خطا در دریافت تسک‌ها")
+                /* آفلاین: به کش محلی برمی‌گردیم تا داشبورد کار کند */
+                const cached = readCachedDay(selectedDate)
+                if (cached) {
+                    setTasks(cached.tasks)
+                    setOffline(true)
+                } else if (isOffline()) {
+                    setTasks([])
+                    setOffline(true)
+                } else {
+                    toast.error(e instanceof Error ? e.message : "خطا در دریافت تسک‌ها")
+                }
             }
         } finally {
             if (seq === requestSeq.current) setLoading(false)
@@ -78,7 +124,24 @@ export default function DailyTaskList() {
 
     useEffect(() => {
         refreshAll()
-    }, [refreshAll])
+        refreshQueue()
+    }, [refreshAll, refreshQueue])
+
+    /* وقتی آنلاین شدیم: صف را سینک کن و روز را دوباره بگیر */
+    useEffect(() => {
+        const off = onOnline(() => {
+            void (async () => {
+                const synced = await syncQueue()
+                if (synced > 0) {
+                    toast.success(`${faDigits(synced)} تسک آفلاین سینک شد ✅`)
+                }
+                refreshQueue()
+                await refreshAll()
+                refreshSummary(true)
+            })()
+        })
+        return off
+    }, [refreshAll, refreshQueue, refreshSummary])
 
     const afterMutation = useCallback(
         async (msg?: string) => {
@@ -175,7 +238,7 @@ export default function DailyTaskList() {
 
             {loading && tasks.length === 0 ? (
                 <p className={styles.empty}>در حال بارگذاری…</p>
-            ) : ordered.length === 0 ? (
+            ) : ordered.length === 0 && visibleQueued.length === 0 ? (
                 <div className={styles.empty}>
                     هنوز کاری برای این روز ثبت نشده.
                     <br />
@@ -193,6 +256,32 @@ export default function DailyTaskList() {
                                 onDelete={setDeleteTask}
                                 onReanalyze={setReanalyzeTask}
                             />
+                        ))}
+
+                        {/* تسک‌های ساخته‌شده در حالت آفلاین — هنوز سینک نشده‌اند */}
+                        {visibleQueued.map((q) => (
+                            <motion.li
+                                key={q.id}
+                                className={`${styles.card} ${styles.queuedCard}`}
+                                initial={{ opacity: 0, y: 14 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: .96 }}
+                                layout
+                            >
+                                <div className={styles.topRow}>
+                                    <span className={styles.text}>{q.text}</span>
+                                </div>
+                                <div className={styles.chips}>
+                                    <span className="dp-queued-chip">⏳ در صف سینک — آفلاین</span>
+                                    <span className={styles.chipTime}>
+                                        🕐 {faDigits(new Date(q.createdAt).getHours())}:
+                                        {faDigits(String(new Date(q.createdAt).getMinutes()).padStart(2, "0"))}
+                                    </span>
+                                </div>
+                                <p className={styles.hint} style={{ margin: 0 }}>
+                                    تحلیل هوش مصنوعی بعد از اتصال به اینترنت انجام می‌شود.
+                                </p>
+                            </motion.li>
                         ))}
                     </AnimatePresence>
                 </ul>

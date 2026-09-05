@@ -24,8 +24,6 @@
 
 /* ====== هدر لندینگ ====== */
 .landingPage .app-header {
-    position: relative;
-    top: 0;
     margin: 20px auto 0;
 }
 
@@ -325,6 +323,137 @@
     font-size: .95rem;
 }
 
+/* ====== بخش نصب روی گوشی (دانلود + QR) ====== */
+.downloadSection {
+    padding: 40px 20px 20px;
+}
+
+.downloadCard {
+    max-width: 920px;
+    margin-inline: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 48px 32px;
+    box-shadow: var(--shadow-lg);
+    display: grid;
+    gap: 26px;
+}
+
+.downloadTitle {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: clamp(1.4rem, 3.4vw, 2rem);
+    font-weight: 800;
+}
+
+.downloadText {
+    margin: 0 auto;
+    max-width: 560px;
+    text-align: center;
+    color: var(--muted);
+    line-height: 2;
+    font-size: .95rem;
+}
+
+.downloadGrid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 34px;
+    align-items: center;
+}
+
+.qrBox {
+    display: grid;
+    gap: 10px;
+    justify-items: center;
+    padding: 18px;
+    border-radius: 22px;
+    background: var(--primary-soft);
+}
+
+.qrImg {
+    width: 210px;
+    height: 210px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+}
+
+.qrPlaceholder {
+    width: 210px;
+    height: 210px;
+    border-radius: 16px;
+    border: 1.5px dashed var(--border);
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: .8rem;
+}
+
+.qrCaption {
+    font-size: .75rem;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.downloadActions {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+}
+
+.platformCard {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 18px;
+    background: var(--surface);
+}
+
+.platformCard strong {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .9rem;
+    color: var(--text);
+}
+
+.platformCard ol {
+    margin: 8px 0 0;
+    padding-inline-start: 18px;
+    color: var(--muted);
+    font-size: .82rem;
+    line-height: 1.9;
+}
+
+.iosHint {
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+@media (max-width: 700px) {
+    .downloadCard {
+        padding: 36px 20px;
+    }
+
+    .downloadGrid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .downloadActions {
+        justify-items: stretch;
+        width: 100%;
+    }
+}
+
 /* ====== CTA ====== */
 .ctaSection {
     padding: 110px 20px;
@@ -440,6 +569,10 @@
 
 :global([data-theme="dark"]) .landingPage .app-header {
     background: rgba(17, 25, 45, .8);
+}
+
+:global([data-theme="dark"]) .landingPage .platformCard {
+    background: #0e1526;
 }
 
 :global([data-theme="dark"]) .landingPage .header-user-name {

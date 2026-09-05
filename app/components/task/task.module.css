@@ -380,6 +380,12 @@
     font-size: .85rem;
 }
 
+/* کارت تسکی که در حالت آفلاین ساخته شده و هنوز سینک نشده */
+.queuedCard {
+    border: 1.5px dashed rgba(245, 158, 11, .55);
+    background: linear-gradient(0deg, var(--warning-bg), var(--surface));
+}
+
 /* ====== حالت خالی و رول‌اور ====== */
 .empty {
     text-align: center;

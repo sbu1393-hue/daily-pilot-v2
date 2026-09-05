@@ -2,6 +2,7 @@ import Header from "@/app/components/Header"
 import Hero from "@/app/components/landing/Hero"
 import DashboardPreview from "@/app/components/landing/DashboardPreview"
 import Features from "@/app/components/landing/Features"
+import DownloadSection from "@/app/components/landing/DownloadSection"
 import CTASection from "@/app/components/landing/CTASection"
 import { getCurrentUser } from "@/app/lib/getCurrentUser"
 import type { AvatarUser } from "@/app/components/Avatar"
@@ -27,6 +28,7 @@ export default async function Home() {
             <Hero user={user} />
             <DashboardPreview />
             <Features />
+            <DownloadSection />
             <CTASection user={user} />
         </main>
     )

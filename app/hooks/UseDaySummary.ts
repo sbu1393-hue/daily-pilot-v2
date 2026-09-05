@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { useCalendar } from "@/app/contexts/CalenderContext"
+import { readCachedDay } from "@/app/lib/offline"
 
 export type DaySummary = {
     dayKey: string
@@ -34,7 +35,14 @@ export function useDaySummary() {
                 setSummary(json.summary)
                 setError(null)
             } catch (e) {
-                setError(e instanceof Error ? e.message : "خطای ناشناخته")
+                /* آفلاین: نمایش خلاصه‌ی کش‌شده تا نوار آمار از بین نرود */
+                const cached = readCachedDay(selectedDate)
+                if (cached?.summary) {
+                    setSummary(cached.summary)
+                    setError(null)
+                } else {
+                    setError(e instanceof Error ? e.message : "خطای ناشناخته")
+                }
             } finally {
                 if (!silent) setLoading(false)
             }

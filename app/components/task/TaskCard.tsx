@@ -63,13 +63,20 @@ function TaskCard({ task, onComplete, onDelete, onReanalyze }: Props) {
                 <span className={styles.chip} style={{ color: cat.color, background: cat.bg }}>
                     {cat.label}
                 </span>
-                <span className={styles.chip} style={{ color: pr.color, background: pr.bg }}>
-                    اولویت: {pr.label}
-                </span>
-                {task.score != null && (
-                    <span className={styles.chip} style={{ color: "#4f46e5", background: "#eef2ff" }}>
-                        امتیاز {faDigits(task.score)}
-                    </span>
+                {/* در حالت آفلاین (مقادیر null) به‌جای اطلاعات AI خط تیره نشان داده می‌شود */}
+                {task.score == null && task.reason == null && task.estimatedTime == null ? (
+                    <span className="dp-ai-missing">🤖 تحلیل هوش مصنوعی: —</span>
+                ) : (
+                    <>
+                        <span className={styles.chip} style={{ color: pr.color, background: pr.bg }}>
+                            اولویت: {pr.label}
+                        </span>
+                        {task.score != null && (
+                            <span className={styles.chip} style={{ color: "#4f46e5", background: "#eef2ff" }}>
+                                امتیاز {faDigits(task.score)}
+                            </span>
+                        )}
+                    </>
                 )}
                 <span className={styles.chipTime} title="زمان ایجاد">
                     🕐 <TimeAgo date={task.createdAt} />
@@ -79,8 +86,10 @@ function TaskCard({ task, onComplete, onDelete, onReanalyze }: Props) {
             {task.reason && <p className={styles.reason}>💡 {task.reason}</p>}
 
             <div className={styles.times}>
-                {task.estimatedTime != null && (
+                {task.estimatedTime != null ? (
                     <span>تخمین AI: <b>{fmtMinutes(task.estimatedTime)}</b></span>
+                ) : (
+                    <span>تخمین AI: <b className="dp-ai-missing">—</b></span>
                 )}
                 {!done &&
                     (task.allocatedMinutes != null ? (

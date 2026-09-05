@@ -6,7 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
+import { AnimatePresence, motion } from "framer-motion"
 import Avatar from "@/app/components/Avatar"
+import AvatarUpload from "@/app/components/AvatarUpload"
 import FormInput from "@/app/components/FormInput"
 import { profileSchema } from "@/app/schema/formSchema"
 import { useSettings } from "@/app/contexts/SettingsContext"
@@ -34,6 +36,14 @@ function toDateInput(value: string | Date | null | undefined): string {
 }
 
 type Tab = "account" | "preferences" | "install" | "info"
+
+/* انیمیشن ورود محتوای هر تب */
+const tabMotion = {
+    initial: { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -10, transition: { duration: .15 } },
+    transition: { duration: .28, ease: "easeOut" as const },
+}
 
 type InfoTab = "about" | "feedback" | "privacy"
 
@@ -140,18 +150,21 @@ export default function SettingsPanel({ user }: { user: UserData }) {
             </div>
 
             <div className={styles.content}>
+                <AnimatePresence mode="wait" initial={false}>
                 {/* ===== حساب کاربری ===== */}
                 {tab === "account" && (
-                    <section className={styles.section}>
+                    <motion.section key="account" className={styles.section} {...tabMotion}>
                         <h2 className={styles.title}>حساب کاربری</h2>
                         <p className={styles.subtitle}>اطلاعات شخصی خود را مدیریت کنید.</p>
 
                         <form onSubmit={handleSubmit(onSaveProfile)} className="dp-form">
                             <div className={styles.avatarRow}>
-                                <Avatar user={user} size="lg" />
+                                <AvatarUpload user={user} />
                                 <div>
                                     <strong>{user.username}</strong>
-                                    <p className={styles.muted}>آواتار به‌صورت خودکار از نام شما ساخته می‌شود.</p>
+                                    <p className={styles.muted}>
+                                        روی دایره بزنید تا عکس پروفایل آپلود شود — عکس به‌صورت خودکار فشرده می‌شود.
+                                    </p>
                                 </div>
                             </div>
 
@@ -193,12 +206,12 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                                 {saving ? "در حال ذخیره..." : "ذخیره تغییرات"}
                             </button>
                         </form>
-                    </section>
+                    </motion.section>
                 )}
 
                 {/* ===== تنظیمات ===== */}
                 {tab === "preferences" && (
-                    <section className={styles.section}>
+                    <motion.section key="preferences" className={styles.section} {...tabMotion}>
                         <h2 className={styles.title}>تنظیمات</h2>
                         <p className={styles.subtitle}>ظاهر و رفتار برنامه را مطابق سلیقه‌تان تنظیم کنید.</p>
 
@@ -272,23 +285,23 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                                 </div>
                             )}
                         </div>
-                    </section>
+                    </motion.section>
                 )}
 
                 {/* ===== نصب برنامه (PWA) ===== */}
                 {tab === "install" && (
-                    <section className={styles.section}>
+                    <motion.section key="install" className={styles.section} {...tabMotion}>
                         <h2 className={styles.title}>نصب برنامه</h2>
                         <p className={styles.subtitle}>
                             Daily Pilot را مثل یک اپ واقعی روی گوشی یا کامپیوترت نصب کن.
                         </p>
                         <InstallCard />
-                    </section>
+                    </motion.section>
                 )}
 
                 {/* ===== اطلاعات ===== */}
                 {tab === "info" && (
-                    <section className={styles.section}>
+                    <motion.section key="info" className={styles.section} {...tabMotion}>
                         <h2 className={styles.title}>اطلاعات</h2>
                         <p className={styles.subtitle}>درباره ما، بازخورد شما و حریم خصوصی.</p>
 
@@ -351,8 +364,9 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                                 </p>
                             </div>
                         )}
-                    </section>
+                    </motion.section>
                 )}
+                </AnimatePresence>
             </div>
         </div>
     )
