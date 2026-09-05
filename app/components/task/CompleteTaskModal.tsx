@@ -7,6 +7,8 @@ import { useSettings } from "@/app/contexts/SettingsContext"
 import AnimatedModal from "../motion/AnimatedModal"
 import { type TaskItem } from "./taskTypes"
 import styles from "./task.module.css"
+import { type TaskItem } from "./taskTypes"
+import styles from "./task.module.css"
 
 type Props = {
     task: TaskItem | null

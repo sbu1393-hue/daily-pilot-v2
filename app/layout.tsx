@@ -47,13 +47,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#6366f1" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b1120" />
+
       </head>
       <body className={vazir.className}>
         <CalendarProvider>
           <SettingsProvider>
             {children}
             <ToastContainer position="bottom-left" rtl closeOnClick pauseOnHover />
+
             <PwaRegister />
+
           </SettingsProvider>
         </CalendarProvider>
       </body>
