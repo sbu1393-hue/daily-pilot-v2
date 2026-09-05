@@ -10,6 +10,7 @@ import Avatar from "@/app/components/Avatar"
 import FormInput from "@/app/components/FormInput"
 import { profileSchema } from "@/app/schema/formSchema"
 import { useSettings } from "@/app/contexts/SettingsContext"
+import InstallCard from "@/app/components/pwa/InstallCard"
 import styles from "./settings.module.css"
 
 type ProfileInput = z.infer<typeof profileSchema>
@@ -32,7 +33,7 @@ function toDateInput(value: string | Date | null | undefined): string {
     return String(value).slice(0, 10)
 }
 
-type Tab = "account" | "preferences" | "info"
+type Tab = "account" | "preferences" | "install" | "info"
 
 type InfoTab = "about" | "feedback" | "privacy"
 
@@ -123,6 +124,15 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                     </button>
                     <button
                         type="button"
+
+                        className={`${styles.navItem} ${tab === "install" ? styles.navItemActive : ""}`}
+                        onClick={() => setTab("install")}
+                    >
+                        📲 نصب برنامه
+                    </button>
+                    <button
+                        type="button"
+
                         className={`${styles.navItem} ${tab === "info" ? styles.navItemActive : ""}`}
                         onClick={() => setTab("info")}
                     >
@@ -266,6 +276,19 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                         </div>
                     </section>
                 )}
+
+
+                {/* ===== نصب برنامه (PWA) ===== */}
+                {tab === "install" && (
+                    <section className={styles.section}>
+                        <h2 className={styles.title}>نصب برنامه</h2>
+                        <p className={styles.subtitle}>
+                            Daily Pilot را مثل یک اپ واقعی روی گوشی یا کامپیوترت نصب کن.
+                        </p>
+                        <InstallCard />
+                    </section>
+                )}
+
 
                 {/* ===== اطلاعات ===== */}
                 {tab === "info" && (

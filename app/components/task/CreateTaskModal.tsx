@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useCalendar } from "@/app/contexts/CalenderContext"
 import { faDigits } from "@/app/lib/time"
 import { toast } from "react-toastify"
+import AnimatedModal from "../motion/AnimatedModal"
 import styles from "./task.module.css"
 
 type Props = {
@@ -25,8 +26,6 @@ export default function CreateTaskModal({ open, onClose, onCreated }: Props) {
         window.addEventListener("keydown", h)
         return () => window.removeEventListener("keydown", h)
     }, [open, onClose])
-
-    if (!open) return null
 
     const submit = async () => {
         if (text.trim().length < 3) {
@@ -60,12 +59,11 @@ export default function CreateTaskModal({ open, onClose, onCreated }: Props) {
     }
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                <div className={styles.modalHead}>
-                    <h4>تسک جدید</h4>
-                    <button className={styles.closeBtn} onClick={onClose}>✕</button>
-                </div>
+        <AnimatedModal open={open} onClose={onClose}>
+            <div className={styles.modalHead}>
+                <h4>تسک جدید</h4>
+                <button className={styles.closeBtn} onClick={onClose}>✕</button>
+            </div>
                 <p className={styles.hint}>
                     برای روز <b>{faDigits(selectedDate.replaceAll("-", "/"))}</b> — هوش مصنوعی اولویت، امتیاز،
                     دلیل و زمان تخمینی را مشخص می‌کند.
@@ -89,7 +87,6 @@ export default function CreateTaskModal({ open, onClose, onCreated }: Props) {
                         انصراف
                     </button>
                 </div>
-            </div>
-        </div>
+        </AnimatedModal>
     )
 }

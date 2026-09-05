@@ -5,6 +5,7 @@ import { X } from "lucide-react"
 import { useCalendar } from "@/app/contexts/CalenderContext"
 import { todayKey } from "../lib/jalili"
 import { faDigits } from "@/app/lib/time"
+import AnimatedModal from "../components/motion/AnimatedModal"
 import styles from "./dashboard.module.css"
 
 const PRESETS = [
@@ -70,8 +71,8 @@ export default function DayStartModal({
     }
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+        <AnimatedModal open={open} onClose={onClose}>
+            <div className={styles.modalCard}>
                 <div className={styles.modalHead}>
                     <h3>
                         {isEdit
@@ -126,6 +127,6 @@ export default function DayStartModal({
                     </button>
                 </form>
             </div>
-        </div>
+        </AnimatedModal>
     )
 }

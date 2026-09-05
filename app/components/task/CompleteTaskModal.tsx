@@ -4,6 +4,9 @@ import { useEffect, useState } from "react"
 import { fmtMinutes } from "@/app/lib/time"
 import { toast } from "react-toastify"
 import { useSettings } from "@/app/contexts/SettingsContext"
+import AnimatedModal from "../motion/AnimatedModal"
+import { type TaskItem } from "./taskTypes"
+import styles from "./task.module.css"
 import { type TaskItem } from "./taskTypes"
 import styles from "./task.module.css"
 
@@ -72,9 +75,8 @@ export default function CompleteTaskModal({ task, onClose, onCompleted }: Props)
     }
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                {!result ? (
+        <AnimatedModal open={task !== null} onClose={onClose}>
+            {!result ? (
                     <>
                         <div className={styles.modalHead}>
                             <h4>تمام کردن تسک</h4>
@@ -142,7 +144,6 @@ export default function CompleteTaskModal({ task, onClose, onCompleted }: Props)
                         </button>
                     </div>
                 )}
-            </div>
-        </div>
+        </AnimatedModal>
     )
 }

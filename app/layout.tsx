@@ -4,6 +4,7 @@ import "./globals.css"
 import "react-toastify/dist/ReactToastify.css"
 import { CalendarProvider } from "./contexts/CalenderContext"
 import { SettingsProvider } from "./contexts/SettingsContext"
+import PwaRegister from "./components/PwaRegister"
 import { ToastContainer } from "react-toastify"
 
 const vazir = Vazirmatn({
@@ -36,12 +37,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fa" dir="rtl" className={vazir.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+
+        {/* ===== PWA ===== */}
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Daily Pilot" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#6366f1" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b1120" />
+
       </head>
       <body className={vazir.className}>
         <CalendarProvider>
           <SettingsProvider>
             {children}
             <ToastContainer position="bottom-left" rtl closeOnClick pauseOnHover />
+
+            <PwaRegister />
+
           </SettingsProvider>
         </CalendarProvider>
       </body>

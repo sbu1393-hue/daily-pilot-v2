@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { faDigits } from "@/app/lib/time"
 import { type TaskItem } from "./taskTypes"
+import AnimatedModal from "../motion/AnimatedModal"
 import styles from "./task.module.css"
 
 type Props = {
@@ -38,8 +39,7 @@ export default function RolloverDialog({ tasks, onClose, onConfirm, busy }: Prop
     }
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <AnimatedModal open onClose={onClose}>
                 <div className={styles.modalHead}>
                     <h4>انتقال کارهای باقی‌مانده</h4>
                     <button className={styles.closeBtn} onClick={onClose}>✕</button>
@@ -68,7 +68,6 @@ export default function RolloverDialog({ tasks, onClose, onConfirm, busy }: Prop
                         بعداً
                     </button>
                 </div>
-            </div>
-        </div>
+        </AnimatedModal>
     )
 }

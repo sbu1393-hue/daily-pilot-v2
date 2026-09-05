@@ -201,6 +201,27 @@ input[type="number"] {
   gap: 18px;
 }
 
+
+
+.dp-btn-block {
+  width: 100%;
+}
+
+.dp-btn:focus-visible,
+.dp-input:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, .35);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   فرم‌ها (Primitives)
+   ============================================================ */
+.dp-form {
+  display: grid;
+  gap: 18px;
+}
+
+
 .dp-field {
   display: grid;
   gap: 6px;
@@ -289,6 +310,92 @@ input[type="number"] {
   color: var(--muted);
 }
 
+
+
+.dp-field-label {
+  font-size: .8rem;
+  font-weight: 800;
+  color: var(--ink-2);
+}
+
+.dp-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font: inherit;
+  font-size: .95rem;
+  background: var(--input-bg);
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.dp-input:focus {
+  border-color: var(--primary);
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, .12);
+}
+
+.dp-input-error {
+  border-color: var(--danger);
+}
+
+.dp-input-error:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 4px rgba(180, 35, 24, .12);
+}
+
+.dp-error-text {
+  margin: 0;
+  color: var(--danger);
+  font-size: .78rem;
+  font-weight: 600;
+}
+
+/* ============================================================
+   لوگو و هدر
+   ============================================================ */
+.dp-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dp-logo-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--gradient);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  box-shadow: 0 8px 18px -8px rgba(79, 70, 229, .6);
+}
+
+.dp-logo-text {
+  display: grid;
+  line-height: 1.5;
+}
+
+.dp-logo-name {
+  font-weight: 800;
+  font-size: .98rem;
+  color: var(--ink);
+}
+
+.dp-logo-name em {
+  font-style: normal;
+  color: var(--primary);
+}
+
+.dp-logo-sub {
+  font-size: .68rem;
+  color: var(--muted);
+}
+
+
 .dp-link-reset {
   text-decoration: none;
   color: inherit;
@@ -296,6 +403,23 @@ input[type="number"] {
 
 .app-header {
   position: sticky;
+
+  top: 12px;
+
+  margin: 20px auto;
+
+  width: min(1000px, 90%);
+
+  background: var(--surface);
+
+  backdrop-filter: blur(20px);
+
+  z-index: 50; /* بالای تقویم/کارت‌ها بماند و زیر مودال‌ها (z-index: 1060) باشد */
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
   top: 20px;
 
   margin: 20px auto;
@@ -311,6 +435,7 @@ input[type="number"] {
 
 
   border-radius: var(--radius-lg);
+
 
 
   box-shadow: 0 20px 50px rgba(0, 0, 0, .08);
@@ -431,6 +556,78 @@ input[type="number"] {
 @media (max-width: 560px) {
   .header-user-name {
     display: none;
+
+  }
+}
+
+/* ============================================================
+   کارت نرم مشترک (تنظیمات/نصب PWA)
+   ============================================================ */
+.dp-card-soft {
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 14px;
+}
+
+.dp-card-title {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dp-card-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 2;
+}
+
+.dp-card-hint {
+  margin: 0;
+  color: var(--muted-2);
+  font-size: .75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dp-install-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 22px;
+  align-items: center;
+}
+
+@media (max-width: 560px) {
+  .dp-install-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+
+.dp-qr-wrap {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.dp-qr-img {
+  width: 190px;
+  height: 190px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  background: #fff;
+}
+
   }
 }
 
@@ -530,8 +727,148 @@ input[type="number"] {
   min-height: 100vh;
 
 
+.dp-qr-placeholder {
+  width: 190px;
+  height: 190px;
+  border-radius: 18px;
+  border: 1.5px dashed var(--border);
+  display: grid;
+  place-items: center;
+  color: var(--muted-2);
+  font-size: .8rem;
+}
+
+.dp-qr-url {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .68rem;
+  color: var(--muted-2);
+  direction: ltr;
+}
+
+.dp-steps {
+  margin: 0;
+  padding-inline-start: 20px;
+  display: grid;
+  gap: 10px;
+  color: var(--ink-2);
+  font-size: .88rem;
+  line-height: 1.9;
+}
+
+.dp-install-steps {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+}
+
+@media (max-width: 560px) {
+  .dp-install-steps {
+    justify-items: center;
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   کارت‌ها و صفحه‌های ورود/ثبت‌نام
+   ============================================================ */
+.dp-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
   background:
 
+    radial-gradient(46rem 24rem at 88% -10%, rgba(139, 92, 246, .14), transparent 60%),
+    radial-gradient(40rem 22rem at -8% 4%, rgba(99, 102, 241, .12), transparent 60%),
+    var(--bg);
+}
+
+.dp-auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 36px 30px;
+  box-shadow: var(--shadow-lg);
+  animation: dp-pop .25s ease;
+}
+
+@keyframes dp-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dp-auth-brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.dp-auth-title {
+  margin: 0 0 8px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.dp-auth-sub {
+  margin: 0 0 26px;
+  text-align: center;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.9;
+}
+
+.dp-auth-switch {
+  margin-top: 20px;
+  text-align: center;
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.dp-auth-switch a {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.dp-auth-switch a:hover {
+  color: var(--primary-dark);
+}
+
+/* ============================================================
+   سطح‌ها و چیدمان کلی اپ
+   ============================================================ */
+.surface {
+
+  background: var(--surface);
+
+  backdrop-filter: blur(20px);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-soft);
+
+}
+
+.app-bg {
+
+  min-height: 100vh;
+
+
+  background:
 
     radial-gradient(
       circle at top left,
