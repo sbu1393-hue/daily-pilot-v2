@@ -6,6 +6,7 @@ import { useState } from "react"
 import { registerSchema } from "@/app/schema/formSchema"
 import { z } from "zod"
 import FormInput from "@/app/components/FormInput"
+import { motion } from "framer-motion"
 import AuthCard from "@/app/components/AuthCard"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
@@ -13,7 +14,7 @@ import Link from "next/link"
 
 export type RegisterInput = z.infer<typeof registerSchema>
 
-export const registerFields = [
+const registerFields = [
     {
         name: "username",
         type: "text",
@@ -38,53 +39,30 @@ export const registerFields = [
         label: "تکرار رمز عبور",
         placeholder: "رمز عبور را دوباره وارد کنید"
     }
-] satisfies {
+] satisfies Array<{
     name: keyof RegisterInput
     type: string
     label: string
     placeholder: string
-}[]
-
-
+}>
 
 export default function RegisterForm() {
-
-
-    const {
-        register,
-        handleSubmit,
-        formState: {
-            errors
-        }
-
-    } = useForm<RegisterInput>({
-
+    const { register, handleSubmit, formState: { errors } } = useForm<RegisterInput>({
         resolver: zodResolver(registerSchema)
-
     })
 
-
     const [loading, setLoading] = useState(false)
-
     const router = useRouter()
 
     const onSubmit = async (data: RegisterInput) => {
-
-
         try {
-
             setLoading(true)
-
 
             const res = await fetch(
                 "/api/auth/register",
                 {
                     method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)
                 }
             )
@@ -98,7 +76,6 @@ export default function RegisterForm() {
 
             toast.success("ثبت نام با موفقیت انجام شد")
             router.push("/auth/login")
-
         }
         catch (error) {
             console.log(error)
@@ -107,67 +84,44 @@ export default function RegisterForm() {
         finally {
             setLoading(false)
         }
-
     }
 
-
-
     return (
-        <AuthCard
-            title="ساخت حساب کاربری"
-            subtitle="چند ثانیه تا شروع برنامهریزی هوشمند روزانه"
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: .28, ease: "easeOut" }}
         >
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="dp-form"
+            <AuthCard
+                title="ساخت حساب کاربری"
+                subtitle="چند ثانیه تا شروع برنامهریزی هوشمند روزانه"
             >
-
-
-                {
-                    registerFields.map((item) => (
-
-                        <FormInput
-
-                            key={item.name}
-
-                            formItem={item}
-
-                            register={register}
-
-                            errors={errors}
-
-                        />
-
-                    ))
-                }
-
-
-
-
-                <button
-
-                    disabled={loading}
-
-                    className="dp-btn dp-btn-primary dp-btn-block"
-
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="dp-form"
                 >
-                    {
-                        loading
-                            ?
-                            "در حال ثبت..."
-                            :
-                            "ثبت نام"
-                    }
-                </button>
-            </form>
+                    {registerFields.map((item) => (
+                        <FormInput
+                            key={item.name}
+                            formItem={item}
+                            register={register}
+                            errors={errors}
+                        />
+                    ))}
 
-            <div className="dp-auth-switch">
-                قبلاً ثبتنام کردهای؟{" "}
-                <Link href="/auth/login">
-                    وارد شو
-                </Link>
-            </div>
-        </AuthCard>
+                    <button
+                        disabled={loading}
+                        className="dp-btn dp-btn-primary dp-btn-block"
+                    >
+                        {loading ? "در حال ثبت..." : "ثبت‌نام رایگان"}
+                    </button>
+                </form>
+
+                <div className="dp-auth-switch">
+                    قبلاً ثبت‌نام کردهای؟{" "}
+                    <Link href="/auth/login">وارد شو</Link>
+                </div>
+            </AuthCard>
+        </motion.div>
     )
-
 }

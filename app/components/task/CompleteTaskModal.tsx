@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { fmtMinutes } from "@/app/lib/time"
 import { toast } from "react-toastify"
 import { useSettings } from "@/app/contexts/SettingsContext"
-import AnimatedModal from "../motion/AnimatedModal"
+import AnimatedModal from "../motion/AnimatedModal" // مودال با انیمیشن فر머-موشن
 import { type TaskItem } from "./taskTypes"
 import styles from "./task.module.css"
 
@@ -78,7 +78,7 @@ export default function CompleteTaskModal({ task, onClose, onCompleted }: Props)
                     <>
                         <div className={styles.modalHead}>
                             <h4>تمام کردن تسک</h4>
-                            <button className={styles.closeBtn} onClick={onClose}>✕</button>
+                            <button className={styles.closeBtn} onClick={onClose} aria-label="بستن">✕</button>
                         </div>
                         <p className={styles.taskTitle}>«{task.text}»</p>
                         {reference != null && (

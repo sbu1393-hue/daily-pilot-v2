@@ -10,5 +10,12 @@ export default async function AuthLayout({
     const user = await getCurrentUser()
     if (user) redirect("/dashboard")
 
-    return <div className="dp-shell">{children}</div>
+    return (
+  <div className="dp-shell">
+    <style>{`
+      .dp-auth-card * { box-sizing: border-box; }
+    `}</style>
+    {children}
+  </div>
+)
 }

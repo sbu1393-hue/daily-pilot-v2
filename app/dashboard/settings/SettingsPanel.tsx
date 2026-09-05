@@ -54,6 +54,11 @@ export default function SettingsPanel({ user }: { user: UserData }) {
     const [infoTab, setInfoTab] = useState<InfoTab>("about")
     const [saving, setSaving] = useState(false)
     const [birthDate, setBirthDate] = useState<string>(toDateInput(user.birthDate))
+    // بخش تغییر رمز عبور
+    const [passwordForm, setPasswordForm] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" })
+    const [passwordLoading, setPasswordLoading] = useState(false)
+    const [passwordError, setPasswordError] = useState<string | null>(null)
+    const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null)
 
     const {
         register,
@@ -103,6 +108,44 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                     ? "یادآور فعال شد؛ در زمان تعیین‌شده به شما اطلاع می‌دهیم"
                     : "برای دریافت یادآور، اجازه‌ی اعلان را در مرورگر بدهید",
             )
+        }
+    }
+
+    const changePassword = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setPasswordError(null)
+        setPasswordSuccess(null)
+        if (passwordForm.currentPassword === passwordForm.newPassword) {
+            setPasswordError("رمز عبور جدید باید با فعلی متفاوت باشد")
+            return
+        }
+        if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+            setPasswordError("رمز عبور جدید و تکرار آن یکسان نیست")
+            return
+        }
+        setPasswordLoading(true)
+        try {
+            const res = await fetch("/api/auth/change-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    currentPassword: passwordForm.currentPassword,
+                    newPassword: passwordForm.newPassword,
+                    newPasswordConfirm: passwordForm.confirmPassword,
+                }),
+            })
+            const json = await res.json()
+            if (!res.ok) {
+                setPasswordError(json.message || "خطا در تغییر رمز عبور")
+                return
+            }
+            setPasswordSuccess(json.message || "رمز عبور تغییر یافت ✅")
+            setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" })
+            toast.success(json.message || "رمز عبور تغییر یافت ✅")
+        } catch {
+            setPasswordError("خطا در ارتباط با سرور")
+        } finally {
+            setPasswordLoading(false)
         }
     }
 
@@ -206,6 +249,62 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                                 {saving ? "در حال ذخیره..." : "ذخیره تغییرات"}
                             </button>
                         </form>
+
+                        {/* بخش تغییر رمز عبور */}
+                        <div className={styles.card} style={{ marginTop: 8 }}>
+                            <h3 className={styles.cardTitle}>🔐 تغییر رمز عبور</h3>
+                            <p className={styles.muted}>
+                                اگر پسورد فعلی‌تان را به یاد دارید، می‌توانید آن را تغییر دهید. کسانی که از روش‌های دیگر
+                                (مثل ایمیل یا شبکه‌های اجتماعی) وارد شده‌اند، می‌توانند این بخش را供給 کنند.
+                            </p>
+                            {passwordSuccess && (
+                                <div className={styles.passwordSuccess}>{passwordSuccess}</div>
+                            )}
+                            {passwordError && (
+                                <div className={styles.passwordError}>{passwordError}</div>
+                            )}
+                            {!passwordSuccess && (
+                                <form className="dp-form" onSubmit={changePassword}>
+                                    <div className="dp-field">
+                                        <label className="dp-field-label">رمز عبور فعلی</label>
+                                        <input
+                                            type="password"
+                                            className="dp-input"
+                                            placeholder="رمز عبور فعلی را وارد کنید"
+                                            value={passwordForm.currentPassword}
+                                            onChange={(e) => setPasswordForm(f => ({ ...f, currentPassword: e.target.value }))}
+                                        />
+                                    </div>
+                                    <div className="dp-field">
+                                        <label className="dp-field-label">رمز عبور جدید</label>
+                                        <input
+                                            type="password"
+                                            className="dp-input"
+                                            placeholder="رمز عبور جدید را وارد کنید"
+                                            value={passwordForm.newPassword}
+                                            onChange={(e) => setPasswordForm(f => ({ ...f, newPassword: e.target.value }))}
+                                        />
+                                    </div>
+                                    <div className="dp-field">
+                                        <label className="dp-field-label">تکرار رمز عبور جدید</label>
+                                        <input
+                                            type="password"
+                                            className="dp-input"
+                                            placeholder="رمز عبور جدید را دوباره وارد کنید"
+                                            value={passwordForm.confirmPassword}
+                                            onChange={(e) => setPasswordForm(f => ({ ...f, confirmPassword: e.target.value }))}
+                                        />
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className="dp-btn dp-btn-primary dp-btn-block"
+                                        disabled={passwordLoading}
+                                    >
+                                        {passwordLoading ? "در حال تغییر..." : "تغییر رمز عبور"}
+                                    </button>
+                                </form>
+                            )}
+                        </div>
                     </motion.section>
                 )}
 
@@ -382,7 +481,7 @@ function FeedbackForm() {
             return
         }
         const subject = encodeURIComponent("بازخورد کاربر Daily Pilot")
-        const body = encodeURIComponent(`${message.trim()}\n\n— از طرف: ${email.trim() || "کاربر ناشناس"}`)
+        const body = encodeURIComponent(`${message.trim()}\\n\\n— از طرف: ${email.trim() || "کاربر ناشناس"}`)
         window.location.href = `mailto:support@dailypilot.app?subject=${subject}&body=${body}`
         toast.success("برنامه‌ی ایمیل شما باز می‌شود؛ فقط کافی است ارسال را بزنید")
     }

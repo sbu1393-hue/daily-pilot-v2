@@ -48,6 +48,9 @@ export default function RolloverDialog({ tasks, onClose, onConfirm, busy }: Prop
                     {faDigits(tasks.length)} کار از روزهای قبل ناتمام مانده. کدام‌ها را به امروز منتقل کنم؟
                 </p>
                 <div className={styles.checkList}>
+                    {tasks.length === 0 && (
+                        <p className={styles.hint} style={{ margin: 0 }}>هیچ تسکی برای انتقال وجود ندارد.</p>
+                    )}
                     {tasks.map((t) => (
                         <label key={t.id} className={styles.checkRow}>
                             <input type="checkbox" checked={selected.has(t.id)} onChange={() => toggle(t.id)} />

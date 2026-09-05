@@ -109,6 +109,34 @@
     display: grid;
     gap: 14px;
     box-shadow: var(--shadow-soft);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, .1);
+}
+
+.passwordSuccess {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, .4);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: .85rem;
+    font-weight: 700;
+    line-height: 1.9;
+}
+
+.passwordError {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(248, 113, 113, .4);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: .85rem;
+    font-weight: 700;
+    line-height: 1.9;
 }
 
 .cardTitle {

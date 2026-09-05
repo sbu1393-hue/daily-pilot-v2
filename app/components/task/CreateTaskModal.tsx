@@ -97,8 +97,7 @@ export default function CreateTaskModal({ open, onClose, onCreated }: Props) {
     return (
         <AnimatedModal open={open} onClose={onClose}>
             <div className={styles.modalHead}>
-                <h4>تسک جدید</h4>
-                <button className={styles.closeBtn} onClick={onClose}>✕</button>
+                <h4>تسک جدید</h4>                    <button className={styles.closeBtn} onClick={onClose} aria-label="بستن">✕</button>
             </div>
             {offline && (
                 <div className="dp-queued-chip" style={{ justifyContent: "center" }}>
