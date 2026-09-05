@@ -1,10 +1,27 @@
 "use client"
 
 import { memo } from "react"
+import { motion } from "framer-motion"
 import { fmtMinutes, faDigits } from "@/app/lib/time"
+import TimeAgo from "../TimeAgo"
 import { todayKey } from "@/app/lib/jalili" // ۱. ایمپورت تابع محاسبه تاریخ امروز
 import { categoryInfo, priorityMeta, type TaskItem } from "./taskTypes"
 import styles from "./task.module.css"
+
+/* انیمیشن ورود کارت (لیست با stagger هماهنگ می‌شود) */
+const cardVariants = {
+    hidden: { opacity: 0, y: 14 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.3, ease: "easeOut" as const },
+    },
+    exit: {
+        opacity: 0,
+        scale: 0.96,
+        transition: { duration: 0.18 },
+    },
+}
 
 type Props = {
     task: TaskItem
@@ -29,7 +46,14 @@ function TaskCard({ task, onComplete, onDelete, onReanalyze }: Props) {
             : 0
 
     return (
-        <li className={`${styles.card} ${done ? styles.done : ""}`}>
+        <motion.li
+            className={`${styles.card} ${done ? styles.done : ""}`}
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            layout
+        >
             <div className={styles.topRow}>
                 <span className={styles.text}>{task.text}</span>
                 {done && <span className={styles.doneTag}>✓ انجام شد</span>}
@@ -47,6 +71,9 @@ function TaskCard({ task, onComplete, onDelete, onReanalyze }: Props) {
                         امتیاز {faDigits(task.score)}
                     </span>
                 )}
+                <span className={styles.chipTime} title="زمان ایجاد">
+                    🕐 <TimeAgo date={task.createdAt} />
+                </span>
             </div>
 
             {task.reason && <p className={styles.reason}>💡 {task.reason}</p>}
@@ -94,7 +121,7 @@ function TaskCard({ task, onComplete, onDelete, onReanalyze }: Props) {
                     )}
                 </div>
             )}
-        </li>
+        </motion.li>
     )
 }
 

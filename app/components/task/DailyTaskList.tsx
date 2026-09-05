@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import { useCalendar } from "@/app/contexts/CalenderContext"
 import { useDaySummary } from "../../hooks/UseDaySummary"
 import { todayKey, shiftDayKey } from "../../lib/jalili"
@@ -182,23 +183,26 @@ export default function DailyTaskList() {
                 </div>
             ) : (
                 <ul className={styles.list}>
-                    {ordered.map((task) => (
-                        <TaskCard
-                            key={task.id}
-                            task={task}
-                            onComplete={setCompleteTask}
-                            onDelete={setDeleteTask}
-                            onReanalyze={setReanalyzeTask}
-                        />
-                    ))}
+                    {/* AnimatePresence تا کارت‌ها هنگام حذف/اتمام، با انیمیشن خارج شوند */}
+                    <AnimatePresence initial={false} mode="popLayout">
+                        {ordered.map((task) => (
+                            <TaskCard
+                                key={task.id}
+                                task={task}
+                                onComplete={setCompleteTask}
+                                onDelete={setDeleteTask}
+                                onReanalyze={setReanalyzeTask}
+                            />
+                        ))}
+                    </AnimatePresence>
                 </ul>
             )}
 
-            <div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} style={{ width: "fit-content" }}>
                 <button className={styles.btnPrimary} onClick={() => setCreateOpen(true)}>
                     + تسک جدید
                 </button>
-            </div>
+            </motion.div>
 
             <CreateTaskModal
                 open={createOpen}

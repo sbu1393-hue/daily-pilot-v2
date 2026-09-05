@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { TaskItem, priorityMeta, categoryInfo } from "./taskTypes"
 import { faDigits, fmtMinutes } from "@/app/lib/time"
+import AnimatedModal from "../motion/AnimatedModal"
 import styles from "./task.module.css"
 
 type Props = {
@@ -87,8 +88,7 @@ export default function ReanalyzeModal({ task, onClose, onDone }: Props) {
         next.category === old.category
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <AnimatedModal open={task !== null} onClose={onClose}>
 
                 {!result ? (
                     <>
@@ -210,7 +210,6 @@ export default function ReanalyzeModal({ task, onClose, onDone }: Props) {
                     </>
                 )}
 
-            </div>
-        </div>
+        </AnimatedModal>
     )
 }

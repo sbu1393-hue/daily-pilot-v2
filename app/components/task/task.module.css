@@ -95,6 +95,20 @@
     border-radius: 999px;
 }
 
+/* چیپ زمان نسبی «چند دقیقه پیش» */
+.chipTime {
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 3px 11px;
+    border-radius: 999px;
+    color: var(--muted);
+    background: var(--chip-bg);
+}
+
+.chipTime span {
+    font-variant-numeric: tabular-nums;
+}
+
 .reason {
     display: flex;
     gap: 8px;
