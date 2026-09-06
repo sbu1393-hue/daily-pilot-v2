@@ -1,1 +1,0 @@
-Current file already has some header updates applied. Identify remaining differences between current globals.css header block and target premium header styles.
