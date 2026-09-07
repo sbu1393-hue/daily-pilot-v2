@@ -177,6 +177,7 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                     </button>
                     <button
                         type="button"
+
                         className={`${styles.navItem} ${tab === "install" ? styles.navItemActive : ""}`}
                         onClick={() => setTab("install")}
                     >
@@ -184,6 +185,7 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                     </button>
                     <button
                         type="button"
+
                         className={`${styles.navItem} ${tab === "info" ? styles.navItemActive : ""}`}
                         onClick={() => setTab("info")}
                     >
@@ -387,6 +389,7 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                     </motion.section>
                 )}
 
+
                 {/* ===== نصب برنامه (PWA) ===== */}
                 {tab === "install" && (
                     <motion.section key="install" className={styles.section} {...tabMotion}>
@@ -397,6 +400,7 @@ export default function SettingsPanel({ user }: { user: UserData }) {
                         <InstallCard />
                     </motion.section>
                 )}
+
 
                 {/* ===== اطلاعات ===== */}
                 {tab === "info" && (
